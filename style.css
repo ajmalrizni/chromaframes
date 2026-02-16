@@ -2,12 +2,22 @@ body {
   font-family: sans-serif;
   max-width: 1100px;
   margin: 2rem auto;
+  text-align: center;
+}
+
+h1, h2, h3 {
+  text-align: center;
+}
+
+#fileInput {
+  display: block;
+  margin: 1rem auto;
 }
 
 canvas {
   border: 1px solid #ccc;
   display: block;
-  margin-bottom: 1rem;
+  margin: 1rem auto;
 }
 
 button {
@@ -24,10 +34,13 @@ button {
 }
 
 .crop-container {
-  width: 600px;
+  width: 100%;
+  max-width: 600px;
   background: #eee;
   display: flex;
   justify-content: center;
+  box-sizing: border-box;
+  padding: 0 1rem;
 }
 
 .crop-container img {
@@ -36,10 +49,13 @@ button {
 }
 
 .preview-container {
-  width: 300px;
+  width: 100%;
+  max-width: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
+  padding: 0 1rem;
 }
 
 .img-preview {
