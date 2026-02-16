@@ -17,13 +17,16 @@
   <input type="file" id="fileInput" accept="image/*" />
 
   <h2>Crop (3:4 Aspect Ratio)</h2>
-  <div class="crop-container">
-    <img id="imageToCrop" />
+  <div class="crop-wrapper">
+    <div class="crop-container">
+      <img id="imageToCrop" />
+    </div>
+
+    <div class="preview-container">
+      <h3>Live Crop Preview (3:4)</h3>
+      <div class="img-preview"></div>
+    </div>
   </div>
-
-  <button id="applyCropBtn">Apply Crop</button>
-
-  <canvas id="cropCanvas" width="1200" height="1600"></canvas>
 
   <button id="ditherBtn">Dither Image</button>
 

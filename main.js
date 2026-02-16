@@ -8,12 +8,10 @@ import {
 
 const fileInput = document.getElementById("fileInput");
 const imageToCrop = document.getElementById("imageToCrop");
-const cropCanvas = document.getElementById("cropCanvas");
 const outputCanvas = document.getElementById("outputCanvas");
 const deviceCanvas = document.getElementById("deviceCanvas");
 const ditherBtn = document.getElementById("ditherBtn");
 const uploadBtn = document.getElementById("uploadBtn");
-const applyCropBtn = document.getElementById("applyCropBtn");
 
 let cropper = null;
 
@@ -25,7 +23,6 @@ fileInput.addEventListener("change", () => {
   if (!file) return;
 
   const reader = new FileReader();
-
   reader.onload = e => {
     imageToCrop.src = e.target.result;
   };
@@ -33,43 +30,43 @@ fileInput.addEventListener("change", () => {
   reader.readAsDataURL(file);
 });
 
-// 🔥 WAIT for image to render before creating cropper
+// ----------------------------
+// Initialize Cropper with LIVE preview
+// ----------------------------
 imageToCrop.onload = () => {
-  if (cropper) {
-    cropper.destroy();
-  }
+  if (cropper) cropper.destroy();
 
   cropper = new Cropper(imageToCrop, {
     aspectRatio: 3 / 4,
     viewMode: 1,
     autoCropArea: 1,
     responsive: true,
-    background: false
+    background: false,
+    preview: ".img-preview"   // 🔥 Live preview
   });
 };
 
 // ----------------------------
-// Apply crop → 1200x1600
+// Generate 1200x1600 canvas internally when dithering
 // ----------------------------
-applyCropBtn.addEventListener("click", () => {
-  if (!cropper) return;
+function getCropped1200x1600Canvas() {
+  if (!cropper) return null;
 
-  const croppedCanvas = cropper.getCroppedCanvas({
+  return cropper.getCroppedCanvas({
     width: 1200,
     height: 1600,
     imageSmoothingEnabled: true,
     imageSmoothingQuality: "high"
   });
-
-  const ctx = cropCanvas.getContext("2d", { willReadFrequently: true });
-  ctx.clearRect(0, 0, 1200, 1600);
-  ctx.drawImage(croppedCanvas, 0, 0);
-});
+}
 
 // ----------------------------
 // Dither
 // ----------------------------
 ditherBtn.addEventListener("click", () => {
+  const croppedCanvas = getCropped1200x1600Canvas();
+  if (!croppedCanvas) return;
+
   const myPalette = [
     "#191E21",
     "#e8e8e8",
@@ -81,7 +78,7 @@ ditherBtn.addEventListener("click", () => {
 
   const deviceColors = getDeviceColors("spectra6");
 
-  ditherImage(cropCanvas, outputCanvas, {
+  ditherImage(croppedCanvas, outputCanvas, {
     algorithm: "floydSteinberg",
     palette: myPalette
   });
