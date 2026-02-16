@@ -4,28 +4,39 @@
   <meta charset="UTF-8" />
   <title>E-Ink Image Tool</title>
   <link rel="stylesheet" href="style.css" />
+
+  <!-- Cropper.js CSS -->
+  <link
+    href="https://unpkg.com/cropperjs@1.6.2/dist/cropper.css"
+    rel="stylesheet"
+  />
 </head>
 <body>
   <h1>E-Ink Image Optimizer</h1>
 
   <input type="file" id="fileInput" accept="image/*" />
-  <button id="rotateBtn">Rotate 90°</button>
 
-  <h2>Crop (1200 × 1600)</h2>
-
-  <div class="crop-frame">
-    <canvas id="cropCanvas" width="1200" height="1600"></canvas>
+  <h2>Crop (3:4 Aspect Ratio)</h2>
+  <div class="crop-container">
+    <img id="imageToCrop" />
   </div>
+
+  <button id="applyCropBtn">Apply Crop</button>
+
+  <canvas id="cropCanvas" width="1200" height="1600"></canvas>
 
   <button id="ditherBtn">Dither Image</button>
 
-  <h2>Preview</h2>
+  <h2>Preview (Human-friendly)</h2>
   <canvas id="outputCanvas" width="1200" height="1600"></canvas>
 
   <h2>Device Output (E-Ink)</h2>
   <canvas id="deviceCanvas" width="1200" height="1600"></canvas>
 
   <button id="uploadBtn">Upload BMP to S3</button>
+
+  <!-- Cropper.js -->
+  <script src="https://unpkg.com/cropperjs@1.6.2/dist/cropper.js"></script>
 
   <script type="module" src="main.js"></script>
 </body>

@@ -4,21 +4,23 @@ body {
   margin: 2rem auto;
 }
 
-.crop-frame {
-  display: inline-block;
-  padding: 12px;
-  border: 2px solid #aaa;
-  background: #f8f8f8;
+canvas {
+  border: 1px solid #ccc;
+  display: block;
   margin-bottom: 1rem;
 }
 
-canvas {
-  display: block;
-  width: 600px;
-  height: auto;
-  touch-action: none; /* required for pointer events */
+button {
+  margin: 0.5rem 0;
 }
 
-button {
-  margin: 0.5rem 0.5rem 0.5rem 0;
+.crop-container {
+  width: 100%;
+  max-height: 600px;
+  margin-bottom: 1rem;
+}
+
+.crop-container img {
+  max-width: 100%;
+  display: block;
 }
