@@ -11,18 +11,23 @@ canvas {
 }
 
 button {
-  margin: 0.5rem 0;
+  /*margin: 0.5rem 0;*/
+  display: block; 
+  margin: auto;
 }
 
 .crop-wrapper {
   display: flex;
+  flex-direction: column;
   gap: 2rem;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .crop-container {
   width: 600px;
   background: #eee;
+  display: flex;
+  justify-content: center;
 }
 
 .crop-container img {
@@ -32,6 +37,9 @@ button {
 
 .preview-container {
   width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .img-preview {
