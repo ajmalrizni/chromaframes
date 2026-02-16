@@ -1,3 +1,5 @@
+import Cropper from "https://unpkg.com/cropperjs@1.6.2/dist/cropper.esm.js";
+
 import {
   ditherImage,
   getDeviceColors,
@@ -16,33 +18,38 @@ const applyCropBtn = document.getElementById("applyCropBtn");
 let cropper = null;
 
 // ----------------------------
-// Load image into Cropper.js
+// Load image into Cropper
 // ----------------------------
 fileInput.addEventListener("change", () => {
   const file = fileInput.files[0];
   if (!file) return;
 
   const reader = new FileReader();
+
   reader.onload = e => {
     imageToCrop.src = e.target.result;
-
-    if (cropper) {
-      cropper.destroy();
-    }
-
-    cropper = new Cropper(imageToCrop, {
-      aspectRatio: 3 / 4,   // 🔒 LOCKED 3:4 ratio
-      viewMode: 1,
-      autoCropArea: 1,
-      responsive: true
-    });
   };
 
   reader.readAsDataURL(file);
 });
 
+// 🔥 WAIT for image to render before creating cropper
+imageToCrop.onload = () => {
+  if (cropper) {
+    cropper.destroy();
+  }
+
+  cropper = new Cropper(imageToCrop, {
+    aspectRatio: 3 / 4,
+    viewMode: 1,
+    autoCropArea: 1,
+    responsive: true,
+    background: false
+  });
+};
+
 // ----------------------------
-// Apply crop → render EXACT 1200x1600
+// Apply crop → 1200x1600
 // ----------------------------
 applyCropBtn.addEventListener("click", () => {
   if (!cropper) return;
@@ -60,7 +67,7 @@ applyCropBtn.addEventListener("click", () => {
 });
 
 // ----------------------------
-// Dither EXACTLY like demo
+// Dither
 // ----------------------------
 ditherBtn.addEventListener("click", () => {
   const myPalette = [
@@ -74,13 +81,11 @@ ditherBtn.addEventListener("click", () => {
 
   const deviceColors = getDeviceColors("spectra6");
 
-  // 1️⃣ Dither
   ditherImage(cropCanvas, outputCanvas, {
     algorithm: "floydSteinberg",
     palette: myPalette
   });
 
-  // 2️⃣ Replace perceptual → device colors
   replaceColors(outputCanvas, deviceCanvas, {
     originalColors: myPalette,
     replaceColors: deviceColors
@@ -88,7 +93,7 @@ ditherBtn.addEventListener("click", () => {
 });
 
 // ----------------------------
-// Canvas → 24-bit BMP
+// BMP Export
 // ----------------------------
 function canvasToBMP(canvas) {
   const ctx = canvas.getContext("2d");
@@ -139,7 +144,7 @@ function canvasToBMP(canvas) {
 }
 
 // ----------------------------
-// Upload DEVICE COLORS BMP
+// Upload
 // ----------------------------
 uploadBtn.addEventListener("click", async () => {
   const bmpBlob = canvasToBMP(deviceCanvas);
