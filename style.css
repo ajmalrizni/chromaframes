@@ -16,7 +16,7 @@ button {
 
 .crop-container {
   width: 100%;
-  height: 600px;           /* 🔥 REQUIRED */
+  /*height: 600px;            */
   background: #eee;
   overflow: hidden;
   margin-bottom: 1rem;
