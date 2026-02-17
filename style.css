@@ -41,7 +41,7 @@ button {
 
 .crop-container {
   width: 100%;
-  max-width: 600px;
+  max-width: 300px;
   background: #eee;
   display: flex;
   justify-content: center;
