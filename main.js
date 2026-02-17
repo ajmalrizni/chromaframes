@@ -20,11 +20,16 @@ let cropper = null;
 // ----------------------------
 fileInput.addEventListener("change", () => {
   const file = fileInput.files[0];
-  if (!file) return;
+  if (!file) {
+    document.body.classList.remove("has-image");
+    imageToCrop.src = "";
+    return;
+  }
 
   const reader = new FileReader();
   reader.onload = e => {
     imageToCrop.src = e.target.result;
+    document.body.classList.add("has-image");
   };
 
   reader.readAsDataURL(file);

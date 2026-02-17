@@ -15,28 +15,29 @@
   <h1>Chroma Frames</h1>
 
   <input type="file" id="fileInput" accept="image/*" />
+  <div class="hide-on-no-image">
+    <h2>Crop (3:4 Aspect Ratio)</h2>
+    <div class="crop-wrapper">
+      <div class="crop-container">
+        <img id="imageToCrop" />
+      </div>
 
-  <h2>Crop (3:4 Aspect Ratio)</h2>
-  <div class="crop-wrapper">
-    <div class="crop-container">
-      <img id="imageToCrop" />
+      <div class="preview-container">
+        <h3>Live Crop Preview (3:4)</h3>
+        <div class="img-preview"></div>
+      </div>
     </div>
 
-    <div class="preview-container">
-      <h3>Live Crop Preview (3:4)</h3>
-      <div class="img-preview"></div>
-    </div>
+    <button id="ditherBtn">Dither Image</button>
+
+    <!--<h2>Preview (Human-friendly)</h2>-->
+    <canvas id="outputCanvas" width="1200" height="1600"></canvas>
+
+    <!--<h2>Device Output (E-Ink)</h2>-->
+    <canvas id="deviceCanvas" width="1200" height="1600"></canvas>
+
+    <button id="uploadBtn">Upload BMP to S3</button>
   </div>
-
-  <button id="ditherBtn">Dither Image</button>
-
-  <!--<h2>Preview (Human-friendly)</h2>-->
-  <canvas id="outputCanvas" width="1200" height="1600"></canvas>
-
-  <!--<h2>Device Output (E-Ink)</h2>-->
-  <canvas id="deviceCanvas" width="1200" height="1600"></canvas>
-
-  <button id="uploadBtn">Upload BMP to S3</button>
 
   <script type="module" src="main.js"></script>
 </body>

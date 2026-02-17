@@ -2,18 +2,29 @@ body {
   font-family: sans-serif;
   max-width: 1100px;
   margin: 2rem auto;
+  text-align: center;
+}
+
+/* Hide UI until an image is chosen */
+body:not(.has-image) .hide-on-no-image {
+  display: none;
 }
 
 canvas {
   border: 1px solid #ccc;
   display: block;
-  margin-bottom: 1rem;
+  margin: 1rem auto;
 }
 
 button {
   /*margin: 0.5rem 0;*/
   display: block; 
   margin: auto;
+}
+
+#fileInput {
+  display: block;
+  margin: 1rem auto;
 }
 
 .crop-wrapper {
