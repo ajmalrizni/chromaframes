@@ -20,19 +20,11 @@ let cropper = null;
 // ----------------------------
 fileInput.addEventListener("change", () => {
   const file = fileInput.files[0];
-
-  // If no file selected, clear image and hide UI
-  if (!file) {
-    imageToCrop.src = "";
-    document.body.classList.remove("has-image");
-    return;
-  }
+  if (!file) return;
 
   const reader = new FileReader();
   reader.onload = e => {
     imageToCrop.src = e.target.result;
-    // Show the rest of the UI
-    document.body.classList.add("has-image");
   };
 
   reader.readAsDataURL(file);
