@@ -12,7 +12,6 @@ const outputCanvas = document.getElementById("outputCanvas");
 const deviceCanvas = document.getElementById("deviceCanvas");
 const ditherBtn = document.getElementById("ditherBtn");
 const uploadBtn = document.getElementById("uploadBtn");
-const rotateBtn = document.getElementById("rotateBtn");
 
 let cropper = null;
 
@@ -174,11 +173,3 @@ uploadBtn.addEventListener("click", async () => {
 
   alert("Device-accurate BMP UPLOADED!");
 });
-
-// Rotate image 90 degrees
-if (rotateBtn) {
-  rotateBtn.addEventListener("click", () => {
-    if (!cropper) return;
-    cropper.rotate(90);
-  });
-}

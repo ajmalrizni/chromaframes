@@ -3,7 +3,7 @@
 }
 
 /* Hide everything except the title and file chooser until an image is loaded */
-h2, .crop-wrapper, .preview-container, #rotateBtn, #ditherBtn, #uploadBtn, #outputCanvas, #deviceCanvas {
+h2, .crop-wrapper, .preview-container, #ditherBtn, #uploadBtn, #outputCanvas, #deviceCanvas {
   display: none;
 }
 
@@ -31,8 +31,7 @@ body.has-image .preview-container {
   display: flex;
 }
 body.has-image #ditherBtn,
-body.has-image #uploadBtn,
-body.has-image #rotateBtn {
+body.has-image #uploadBtn {
   display: block;
   margin: 1rem auto;
 }
