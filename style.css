@@ -2,6 +2,11 @@
   box-sizing: border-box;
 }
 
+/* Hide everything except the title and file chooser until an image is loaded */
+h2, .crop-wrapper, .preview-container, #rotateBtn, #ditherBtn, #uploadBtn, #outputCanvas, #deviceCanvas {
+  display: none;
+}
+
 body {
   font-family: sans-serif;
   width: 100%;
@@ -13,6 +18,28 @@ body {
 
 h1, h2, h3 {
   text-align: center;
+}
+
+/* Show elements once an image is selected */
+body.has-image h2,
+body.has-image .crop-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+body.has-image .preview-container {
+  display: flex;
+}
+body.has-image #ditherBtn,
+body.has-image #uploadBtn,
+body.has-image #rotateBtn {
+  display: block;
+  margin: 1rem auto;
+}
+body.has-image #outputCanvas,
+body.has-image #deviceCanvas {
+  display: block;
+  margin: 1rem auto;
 }
 
 #fileInput {

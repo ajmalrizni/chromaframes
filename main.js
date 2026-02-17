@@ -12,6 +12,7 @@ const outputCanvas = document.getElementById("outputCanvas");
 const deviceCanvas = document.getElementById("deviceCanvas");
 const ditherBtn = document.getElementById("ditherBtn");
 const uploadBtn = document.getElementById("uploadBtn");
+const rotateBtn = document.getElementById("rotateBtn");
 
 let cropper = null;
 
@@ -20,11 +21,19 @@ let cropper = null;
 // ----------------------------
 fileInput.addEventListener("change", () => {
   const file = fileInput.files[0];
-  if (!file) return;
+
+  // If no file selected, clear image and hide UI
+  if (!file) {
+    imageToCrop.src = "";
+    document.body.classList.remove("has-image");
+    return;
+  }
 
   const reader = new FileReader();
   reader.onload = e => {
     imageToCrop.src = e.target.result;
+    // Show the rest of the UI
+    document.body.classList.add("has-image");
   };
 
   reader.readAsDataURL(file);
@@ -165,3 +174,11 @@ uploadBtn.addEventListener("click", async () => {
 
   alert("Device-accurate BMP UPLOADED!");
 });
+
+// Rotate image 90 degrees
+if (rotateBtn) {
+  rotateBtn.addEventListener("click", () => {
+    if (!cropper) return;
+    cropper.rotate(90);
+  });
+}
