@@ -26,6 +26,12 @@ canvas {
   margin: 1rem auto;
 }
 
+/* Hide preview canvases by default */
+#outputCanvas,
+#deviceCanvas {
+  display: none;
+}
+
 button {
   /*margin: 0.5rem 0;*/
   display: block; 
