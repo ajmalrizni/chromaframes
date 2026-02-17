@@ -5,6 +5,22 @@ body {
   text-align: center;
 }
 
+h1 {
+  text-align: center;
+  margin: 0.5rem 0 1rem;
+}
+
+/* Ensure the native file input button is centered */
+input[type="file"] {
+  display: block;
+  margin: 0.75rem auto;
+}
+
+input[type="file"]::file-selector-button,
+input[type="file"]::-webkit-file-upload-button {
+  cursor: pointer;
+}
+
 /* Hide UI until an image is chosen */
 body:not(.has-image) .hide-on-no-image {
   display: none;
@@ -14,6 +30,12 @@ canvas {
   border: 1px solid #ccc;
   display: block;
   margin: 1rem auto;
+}
+
+/* Keep processing canvases hidden from the UI (used for generating output only) */
+#outputCanvas,
+#deviceCanvas {
+  display: none;
 }
 
 button {
