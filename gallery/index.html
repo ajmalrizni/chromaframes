@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ChromaFrames Gallery</title>
+  <style>
+    body { font-family: sans-serif; background: #111; color: white; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, 200px); gap: 15px; }
+    .card { background: #222; padding: 10px; border-radius: 8px; }
+    img { width: 100%; border-radius: 6px; }
+    button { margin-top: 8px; width: 100%; }
+  </style>
+</head>
+<body>
+
+<h1>Gallery</h1>
+<div class="grid" id="gallery"></div>
+
+<script>
+const API = "https://uz4bkybj2tg7g6ezr5jrfo75fq0ifqkm.lambda-url.eu-west-2.on.aws/";
+const BUCKET_URL = "https://chroma-img.s3.eu-north-1.amazonaws.com/";
+
+async function loadGallery() {
+  const res = await fetch(API);
+  const text = await res.text();
+  const files = text.split("\n").filter(Boolean);
+
+  const container = document.getElementById("gallery");
+  container.innerHTML = "";
+
+  files.forEach(file => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <img src="${BUCKET_URL}${file}" />
+      <button onclick="deleteImage('${file}')">Delete</button>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+async function deleteImage(filename) {
+  if (!confirm("Delete this image?")) return;
+
+  await fetch(API, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ filename })
+  });
+
+  loadGallery();
+}
+
+loadGallery();
+</script>
+
+</body>
+</html>
