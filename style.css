@@ -32,6 +32,18 @@ canvas {
   margin: 1rem auto;
 }
 
+/* Banner across top of pages */
+header.banner {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+header.banner img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 /* Keep processing canvases hidden from the UI (used for generating output only) */
 #outputCanvas,
 #deviceCanvas {

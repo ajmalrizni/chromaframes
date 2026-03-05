@@ -2,7 +2,9 @@
 <html>
 <head>
   <title>ChromaFrames Gallery</title>
+  <link rel="stylesheet" href="../style.css" />
   <style>
+    /* page-specific overrides and gallery layout */
     body { font-family: sans-serif; background: #111; color: white; }
     .grid { display: grid; grid-template-columns: repeat(auto-fill, 200px); gap: 15px; }
     .card { background: #222; padding: 10px; border-radius: 8px; }
@@ -11,6 +13,10 @@
   </style>
 </head>
 <body>
+
+<header class="banner">
+  <img src="../banner.jpg" alt="Site Banner">
+</header>
 
 <h1>Gallery</h1>
 <div class="grid" id="gallery"></div>
