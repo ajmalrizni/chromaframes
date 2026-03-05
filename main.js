@@ -10,7 +10,6 @@ const fileInput = document.getElementById("fileInput");
 const imageToCrop = document.getElementById("imageToCrop");
 const outputCanvas = document.getElementById("outputCanvas");
 const deviceCanvas = document.getElementById("deviceCanvas");
-const ditherBtn = document.getElementById("ditherBtn");
 const uploadBtn = document.getElementById("uploadBtn");
 
 let cropper = null;
@@ -66,11 +65,11 @@ function getCropped1200x1600Canvas() {
 }
 
 // ----------------------------
-// Dither
+// Prepare device canvas by cropping & dithering
 // ----------------------------
-ditherBtn.addEventListener("click", () => {
+function prepareDeviceCanvas() {
   const croppedCanvas = getCropped1200x1600Canvas();
-  if (!croppedCanvas) return;
+  if (!croppedCanvas) return false;
 
   const myPalette = [
     "#191E21",
@@ -92,7 +91,9 @@ ditherBtn.addEventListener("click", () => {
     originalColors: myPalette,
     replaceColors: deviceColors
   });
-});
+
+  return true;
+}
 
 // ----------------------------
 // BMP Export
@@ -149,6 +150,13 @@ function canvasToBMP(canvas) {
 // Upload
 // ----------------------------
 uploadBtn.addEventListener("click", async () => {
+  // ensure an image is cropped and dithering performed first
+  const ok = prepareDeviceCanvas();
+  if (!ok) {
+    alert("Please select and crop an image first.");
+    return;
+  }
+
   const bmpBlob = canvasToBMP(deviceCanvas);
 
   const UPLOAD_ENDPOINT =

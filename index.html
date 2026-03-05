@@ -32,7 +32,7 @@
       </div>
     </div>
 
-    <button id="ditherBtn">Dither Image</button>
+    <!-- dithering is now done automatically when uploading -->
 
     <!--<h2>Preview (Human-friendly)</h2>-->
     <canvas id="outputCanvas" width="1200" height="1600"></canvas>
@@ -41,6 +41,7 @@
     <canvas id="deviceCanvas" width="1200" height="1600"></canvas>
 
     <button id="uploadBtn">Upload BMP to S3</button>
+    <p><small>Dithering and device conversion occur automatically when you hit upload.</small></p>
   </div>
 
   <script type="module" src="main.js"></script>
