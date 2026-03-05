@@ -36,12 +36,15 @@ canvas {
 header.banner {
   width: 100%;
   margin-bottom: 1rem;
+  text-align: center; /* centre contents in case img is inline */
 }
 
 header.banner img {
-  width: 100%;
+  max-width: 1000px; /* or whatever maximum width you prefer */
+  width: auto;
   height: auto;
   display: block;
+  margin: 0 auto; /* centre within header */
 }
 
 /* Keep processing canvases hidden from the UI (used for generating output only) */
