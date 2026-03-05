@@ -11,14 +11,31 @@ h1 {
 }
 
 /* Ensure the native file input button is centered */
-input[type="file"] {
-  display: block;
-  margin: 0.75rem auto;
+.file-input-wrapper {
+  text-align: center;
 }
 
-input[type="file"]::file-selector-button,
-input[type="file"]::-webkit-file-upload-button {
+/* hide native input but keep it accessible */
+.file-input-wrapper input[type="file"] {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.file-input-wrapper .file-label {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: #007acc;
+  color: #fff;
+  border-radius: 4px;
   cursor: pointer;
+}
+
+#fileName {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
 }
 
 /* Hide UI until an image is chosen */

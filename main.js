@@ -17,13 +17,18 @@ let cropper = null;
 // ----------------------------
 // Load image into Cropper
 // ----------------------------
+const fileNameDisplay = document.getElementById("fileName");
+
 fileInput.addEventListener("change", () => {
   const file = fileInput.files[0];
   if (!file) {
     document.body.classList.remove("has-image");
     imageToCrop.src = "";
+    fileNameDisplay.textContent = "No file chosen";
     return;
   }
+
+  fileNameDisplay.textContent = file.name;
 
   const reader = new FileReader();
   reader.onload = e => {
