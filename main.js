@@ -11,6 +11,7 @@ const imageToCrop = document.getElementById("imageToCrop");
 const outputCanvas = document.getElementById("outputCanvas");
 const deviceCanvas = document.getElementById("deviceCanvas");
 const uploadBtn = document.getElementById("uploadBtn");
+const rotateRightBtn = document.getElementById("rotateRightBtn");
 
 let cropper = null;
 
@@ -154,6 +155,13 @@ function canvasToBMP(canvas) {
 // ----------------------------
 // Upload
 // ----------------------------
+rotateRightBtn.addEventListener("click", () => {
+  // rotate the cropper viewport 90 degrees clockwise
+  if (cropper) {
+    cropper.rotate(90);
+  }
+});
+
 uploadBtn.addEventListener("click", async () => {
   // ensure an image is cropped and dithering performed first
   const ok = prepareDeviceCanvas();
