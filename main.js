@@ -156,10 +156,24 @@ function canvasToBMP(canvas) {
 // Upload
 // ----------------------------
 rotateRightBtn.addEventListener("click", () => {
-  // rotate the cropper viewport 90 degrees clockwise
-  if (cropper) {
-    cropper.rotate(90);
-  }
+  // rotate the underlying image data 90 degrees clockwise so cropping uses portrait orientation
+  if (!imageToCrop.src) return;
+
+  const img = new Image();
+  img.onload = () => {
+    const { naturalWidth: w, naturalHeight: h } = img;
+    const canvas = document.createElement("canvas");
+    canvas.width = h;
+    canvas.height = w;
+    const ctx = canvas.getContext("2d");
+
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate((90 * Math.PI) / 180);
+    ctx.drawImage(img, -w / 2, -h / 2);
+
+    imageToCrop.src = canvas.toDataURL();
+  };
+  img.src = imageToCrop.src;
 });
 
 uploadBtn.addEventListener("click", async () => {
