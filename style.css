@@ -108,8 +108,35 @@ button {
 }
 
 .img-preview {
+  position: relative;
   width: 100%;
   aspect-ratio: 3 / 4;
   overflow: hidden;
   border: 1px solid #ccc;
+}
+
+/* Guidelines at 90% height and 95% width (for the live crop preview) */
+.img-preview::before,
+.img-preview::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  background: rgba(255, 0, 0, 0.75);
+  z-index: 1;
+}
+
+/* horizontal guideline — 90% of the preview height */
+.img-preview::before {
+  top: 90%;
+  left: 0;
+  right: 0;
+  height: 1px;
+}
+
+/* vertical guideline — 95% of the preview width */
+.img-preview::after {
+  top: 0;
+  bottom: 0;
+  left: 95%;
+  width: 1px;
 }
