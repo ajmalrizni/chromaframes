@@ -71,9 +71,20 @@ header.banner img {
 }
 
 button {
-  /*margin: 0.5rem 0;*/
-  display: block; 
-  margin: auto;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: #007acc;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font: inherit;
+  margin: 0.25rem;
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 #fileInput {

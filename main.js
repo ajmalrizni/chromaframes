@@ -48,7 +48,7 @@ imageToCrop.onload = () => {
 
   cropper = new Cropper(imageToCrop, {
     aspectRatio: 3 / 4,
-    viewMode: 1,
+    viewMode: 0, // allow zooming/panning outside the original image bounds
     autoCropArea: 1,
     responsive: true,
     background: false,
