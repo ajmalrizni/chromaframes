@@ -1,7 +1,7 @@
 body {
   font-family: sans-serif;
   max-width: 1100px;
-  margin: 2rem auto;
+  margin: 0 auto;
   text-align: center;
 }
 
@@ -58,7 +58,11 @@ header.banner {
 
 header.banner img {
   max-width: 1000px; /* or whatever maximum width you prefer */
-  width: auto;
+  /* 
+    Width will be whatever the width of the viewport is. Allowing the height to
+    continue automatically keep scaling with the width of the page
+  */
+  width: 100%;
   height: auto;
   display: block;
   margin: 0 auto; /* centre within header */
