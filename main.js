@@ -105,7 +105,7 @@ function prepareDeviceCanvas() {
 // BMP Export
 // ----------------------------
 function canvasToBMP(canvas) {
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
   const { width, height } = canvas;
   const imageData = ctx.getImageData(0, 0, width, height);
   const data = imageData.data;
