@@ -37,15 +37,11 @@ async function loadGallery() {
     const card = document.createElement("div");
     card.className = "card";
 
-    const img = document.createElement("img");
-    img.src = `${BUCKET_URL}${file}`;
+    card.innerHTML = `
+      <img src="${BUCKET_URL}${file}" />
+      <button onclick="deleteImage('${file}')">Delete</button>
+    `;
 
-    const button = document.createElement("button");
-    button.textContent = "Delete";
-    button.addEventListener("click", () => deleteImage(file));
-
-    card.appendChild(img);
-    card.appendChild(button);
     container.appendChild(card);
   });
 }
