@@ -53,22 +53,13 @@ async function loadGallery() {
 async function deleteImage(filename) {
   if (!confirm("Delete this image?")) return;
 
-  try {
-    const response = await fetch(API, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ filename })
-    });
+  await fetch(API, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ filename })
+  });
 
-    if (!response.ok) {
-      alert(`Delete failed: ${response.status} ${response.statusText}`);
-      return;
-    }
-
-    loadGallery();
-  } catch (error) {
-    alert(`Error deleting image: ${error.message}`);
-  }
+  loadGallery();
 }
 
 loadGallery();
