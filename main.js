@@ -87,17 +87,19 @@ function prepareDeviceCanvas() {
     "#efde44"
   ];
 
-  const deviceColors = getDeviceColors("spectra6");
+  //const deviceColors = getDeviceColors("spectra6");
 
   ditherImage(croppedCanvas, outputCanvas, {
     algorithm: "floydSteinberg",
     palette: aitjcizeSpectra6Palette//palette: myPalette
   });
 
-  replaceColors(outputCanvas, deviceCanvas, {
+  replaceColors(outputCanvas, deviceCanvas, aitjcizeSpectra6Palette);
+
+    /*replaceColors(outputCanvas, deviceCanvas, {
     originalColors: aitjcizeSpectra6Palette,//palette: myPalette
     replaceColors: deviceColors
-  });
+  });*/
 
   return true;
 }
