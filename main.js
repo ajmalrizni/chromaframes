@@ -3,7 +3,8 @@ import Cropper from "https://unpkg.com/cropperjs@1.6.2/dist/cropper.esm.js";
 import {
   ditherImage,
   getDeviceColors,
-  replaceColors
+  replaceColors,
+  aitjcizeSpectra6Palette,
 } from "https://cdn.jsdelivr.net/npm/epdoptimize/+esm";
 
 const fileInput = document.getElementById("fileInput");
