@@ -90,11 +90,11 @@ function prepareDeviceCanvas() {
 
   ditherImage(croppedCanvas, outputCanvas, {
     algorithm: "floydSteinberg",
-    palette: myPalette
+    palette: aitjcizeSpectra6Palette//palette: myPalette
   });
 
   replaceColors(outputCanvas, deviceCanvas, {
-    originalColors: myPalette,
+    originalColors: aitjcizeSpectra6Palette,//palette: myPalette
     replaceColors: deviceColors
   });
 
