@@ -74,24 +74,13 @@ function getCropped1200x1600Canvas() {
 // ----------------------------
 // Prepare device canvas by cropping & dithering
 // ----------------------------
-function prepareDeviceCanvas() {
+async function prepareDeviceCanvas() {
   const croppedCanvas = getCropped1200x1600Canvas();
   if (!croppedCanvas) return false;
 
-  const myPalette = [
-    "#191E21",
-    "#e8e8e8",
-    "#2157ba",
-    "#125f20",
-    "#b21318",
-    "#efde44"
-  ];
-
-  //const deviceColors = getDeviceColors("spectra6");
-
-  ditherImage(croppedCanvas, outputCanvas, {
+  await ditherImage(croppedCanvas, outputCanvas, {
     algorithm: "floydSteinberg",
-    palette: aitjcizeSpectra6Palette//palette: myPalette
+    palette: aitjcizeSpectra6Palette,
   });
 
   replaceColors(outputCanvas, deviceCanvas, aitjcizeSpectra6Palette);
@@ -181,7 +170,7 @@ rotateRightBtn.addEventListener("click", () => {
 
 uploadBtn.addEventListener("click", async () => {
   // ensure an image is cropped and dithering performed first
-  const ok = prepareDeviceCanvas();
+  const ok = await prepareDeviceCanvas();
   if (!ok) {
     alert("Please select and crop an image first.");
     return;
