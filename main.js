@@ -94,6 +94,17 @@ async function prepareDeviceCanvas() {
   await ditherImage(croppedCanvas, outputCanvas, {
     algorithm: "floydSteinberg",
     palette: aitjcizeSpectra6Palette,
+    imageAdjustmentOptions: {
+      toneMapping: {
+        mode: "scurve",
+        exposure: 0.07,
+        saturation: 0.9,
+        strength: 0.7,
+        shadowBoost: 0.05,
+        highlightCompress: -1.2,
+        midpoint: 0.5,
+      },
+    },
   });
 
   replaceColors(outputCanvas, deviceCanvas, aitjcizeSpectra6Palette);
