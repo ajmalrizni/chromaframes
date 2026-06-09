@@ -40,14 +40,13 @@
 
     <!-- dithering is now done automatically when uploading -->
 
-    <!--<h2>Preview (Human-friendly)</h2>-->
     <canvas id="outputCanvas" width="1200" height="1600"></canvas>
 
-    <!--<h2>Device Output (E-Ink)</h2>-->
+    <h2>Live Device Preview</h2>
     <canvas id="deviceCanvas" width="1200" height="1600"></canvas>
 
     <button id="uploadBtn">Upload BMP to S3</button>
-    <p><small>Dithering and device conversion occur automatically when you hit upload.</small></p>
+    <p><small>Device preview updates live as you crop and rotate the image.</small></p>
   </div>
 
   <script type="module" src="main.js"></script>

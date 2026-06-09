@@ -15,6 +15,14 @@ const uploadBtn = document.getElementById("uploadBtn");
 const rotateRightBtn = document.getElementById("rotateRightBtn");
 
 let cropper = null;
+let previewTimer = null;
+
+function schedulePreviewRefresh() {
+  if (previewTimer) clearTimeout(previewTimer);
+  previewTimer = setTimeout(() => {
+    void prepareDeviceCanvas();
+  }, 150);
+}
 
 // ----------------------------
 // Load image into Cropper
@@ -49,12 +57,17 @@ imageToCrop.onload = () => {
 
   cropper = new Cropper(imageToCrop, {
     aspectRatio: 3 / 4,
-    viewMode: 0, // allow zooming/panning outside the original image bounds
+    viewMode: 0,
     autoCropArea: 1,
     responsive: true,
     background: false,
-    preview: ".img-preview"   // 🔥 Live preview
+    preview: ".img-preview"
   });
+
+  cropper.on("crop move zoom ready", schedulePreviewRefresh);
+  cropper.on("cropend", schedulePreviewRefresh);
+
+  schedulePreviewRefresh();
 };
 
 // ----------------------------

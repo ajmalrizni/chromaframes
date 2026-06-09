@@ -68,10 +68,16 @@ header.banner img {
   margin: 0 auto; /* centre within header */
 }
 
-/* Keep processing canvases hidden from the UI (used for generating output only) */
-#outputCanvas,
-#deviceCanvas {
+/* Keep the intermediate dither canvas hidden, but show the live device preview */
+#outputCanvas {
   display: none;
+}
+
+#deviceCanvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1rem auto;
 }
 
 button {
