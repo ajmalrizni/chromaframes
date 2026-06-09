@@ -14,6 +14,31 @@ const deviceCanvas = document.getElementById("deviceCanvas");
 const uploadBtn = document.getElementById("uploadBtn");
 const rotateRightBtn = document.getElementById("rotateRightBtn");
 
+const config = {
+  "palette": "aitjcizeSpectra6Palette",
+  "imageAdjustmentOptions": {
+    "toneMapping": {
+      "exposure": 0,
+      "saturation": 0.05,
+      "contrast": 0,
+      "strength": 0,
+      "shadowBoost": 0,
+      "highlightCompress": 0,
+      "midpoint": 0.5
+    },
+    "dynamicRangeCompression": {
+      "mode": "display",
+      "strength": 0.85,
+      "lowPercentile": 0.01,
+      "highPercentile": 0.99
+    }
+  },
+  "canvasDitherOptions": {
+    "serpentine": true,
+    "errorDiffusionMatrix": "stucki"
+  }
+};
+
 let cropper = null;
 let previewTimer = null;
 
@@ -94,17 +119,8 @@ async function prepareDeviceCanvas() {
   await ditherImage(croppedCanvas, outputCanvas, {
     algorithm: "floydSteinberg",
     palette: aitjcizeSpectra6Palette,
-    imageAdjustmentOptions: {
-      toneMapping: {
-        mode: "scurve",
-        exposure: 0.07,
-        saturation: 0.9,
-        strength: 0.7,
-        shadowBoost: 0.05,
-        highlightCompress: -1.2,
-        midpoint: 0.5,
-      },
-    },
+    imageAdjustmentOptions: config.imageAdjustmentOptions,
+    canvasDitherOptions: config.canvasDitherOptions
   });
 
   replaceColors(outputCanvas, deviceCanvas, aitjcizeSpectra6Palette);
