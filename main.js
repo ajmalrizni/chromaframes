@@ -13,6 +13,7 @@ const outputCanvas = document.getElementById("outputCanvas");
 const deviceCanvas = document.getElementById("deviceCanvas");
 const uploadBtn = document.getElementById("uploadBtn");
 const rotateRightBtn = document.getElementById("rotateRightBtn");
+const adjustmentControls = document.getElementById("adjustmentControls");
 
 const config = {
   "palette": "aitjcizeSpectra6Palette",
@@ -49,10 +50,77 @@ function schedulePreviewRefresh() {
   }, 150);
 }
 
+function getNestedValue(source, path) {
+  return path.split(".").reduce((value, key) => value?.[key], source);
+}
+
+function setNestedValue(source, path, value) {
+  const keys = path.split(".");
+  const lastKey = keys.pop();
+  const current = keys.reduce((value, key) => value[key], source);
+  current[lastKey] = value;
+}
+
+function formatSliderValue(path, value) {
+  if (path.includes("Percentile")) return value.toFixed(3);
+  if (path.includes("exposure") || path.includes("saturation") || path.includes("contrast") || path.includes("strength") || path.includes("shadowBoost") || path.includes("highlightCompress") || path.includes("midpoint")) {
+    return value.toFixed(2);
+  }
+  return String(value);
+}
+
+const sliderDefinitions = [
+  { path: "toneMapping.exposure", label: "Exposure", min: -2, max: 2, step: 0.01 },
+  { path: "toneMapping.saturation", label: "Saturation", min: -1, max: 1, step: 0.01 },
+  { path: "toneMapping.contrast", label: "Contrast", min: -1, max: 1, step: 0.01 },
+  { path: "toneMapping.strength", label: "Tone Strength", min: 0, max: 1, step: 0.01 },
+  { path: "toneMapping.shadowBoost", label: "Shadow Boost", min: 0, max: 1, step: 0.01 },
+  { path: "toneMapping.highlightCompress", label: "Highlight Compress", min: -2, max: 2, step: 0.01 },
+  { path: "toneMapping.midpoint", label: "Midpoint", min: 0, max: 1, step: 0.01 },
+  { path: "dynamicRangeCompression.strength", label: "Range Strength", min: 0, max: 1, step: 0.01 },
+  { path: "dynamicRangeCompression.lowPercentile", label: "Low Percentile", min: 0, max: 0.1, step: 0.001 },
+  { path: "dynamicRangeCompression.highPercentile", label: "High Percentile", min: 0.9, max: 1, step: 0.001 },
+];
+
+function createAdjustmentControls() {
+  if (!adjustmentControls) return;
+
+  adjustmentControls.innerHTML = "";
+
+  sliderDefinitions.forEach((definition) => {
+    const card = document.createElement("div");
+    card.className = "slider-card";
+
+    const value = getNestedValue(config.imageAdjustmentOptions, definition.path);
+
+    card.innerHTML = `
+      <div class="slider-header">
+        <label class="slider-label" for="slider-${definition.path}">${definition.label}</label>
+        <span id="value-${definition.path}" class="slider-value">${formatSliderValue(definition.path, value)}</span>
+      </div>
+      <input id="slider-${definition.path}" type="range" min="${definition.min}" max="${definition.max}" step="${definition.step}" value="${value}" />
+    `;
+
+    const input = card.querySelector("input");
+    const valueLabel = card.querySelector(".slider-value");
+
+    input.addEventListener("input", (event) => {
+      const nextValue = Number(event.target.value);
+      setNestedValue(config.imageAdjustmentOptions, definition.path, nextValue);
+      valueLabel.textContent = formatSliderValue(definition.path, nextValue);
+      schedulePreviewRefresh();
+    });
+
+    adjustmentControls.appendChild(card);
+  });
+}
+
 // ----------------------------
 // Load image into Cropper
 // ----------------------------
 const fileNameDisplay = document.getElementById("fileName");
+
+createAdjustmentControls();
 
 fileInput.addEventListener("change", () => {
   const file = fileInput.files[0];

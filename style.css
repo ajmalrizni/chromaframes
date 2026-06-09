@@ -94,6 +94,59 @@ button {
   margin: 0.25rem;
 }
 
+.controls-panel {
+  width: 100%;
+  max-width: 980px;
+  margin: 1.25rem auto 0;
+  padding: 1rem;
+  border: 1px solid #d6d6d6;
+  border-radius: 12px;
+  background: #fafafa;
+  text-align: left;
+}
+
+.controls-note {
+  margin-top: -0.25rem;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.slider-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+
+.slider-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background: #fff;
+  padding: 0.75rem;
+}
+
+.slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.slider-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.slider-value {
+  font-size: 0.9rem;
+  color: #007acc;
+}
+
+.slider-card input[type="range"] {
+  width: 100%;
+  accent-color: #007acc;
+}
+
 button:disabled {
   opacity: 0.55;
   cursor: not-allowed;
