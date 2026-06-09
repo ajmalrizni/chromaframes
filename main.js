@@ -184,12 +184,15 @@ async function prepareDeviceCanvas() {
   const croppedCanvas = getCropped1200x1600Canvas();
   if (!croppedCanvas) return false;
 
-  await ditherImage(croppedCanvas, outputCanvas, {
-    algorithm: "floydSteinberg",
+  const previewOptions = {
     palette: aitjcizeSpectra6Palette,
-    imageAdjustmentOptions: config.imageAdjustmentOptions,
-    canvasDitherOptions: config.canvasDitherOptions
-  });
+    ditheringType: "errorDiffusion",
+    errorDiffusionMatrix: config.canvasDitherOptions.errorDiffusionMatrix || "stucki",
+    serpentine: config.canvasDitherOptions.serpentine ?? true,
+    ...config.imageAdjustmentOptions,
+  };
+
+  await ditherImage(croppedCanvas, outputCanvas, previewOptions);
 
   replaceColors(outputCanvas, deviceCanvas, aitjcizeSpectra6Palette);
 
