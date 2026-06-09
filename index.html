@@ -30,9 +30,16 @@
         <img id="imageToCrop" />
       </div>
 
-      <div class="preview-container">
-        <h3>Live Crop Preview (3:4)</h3>
-        <div class="img-preview"></div>
+      <div class="preview-grid">
+        <div class="preview-card preview-container">
+          <h3>Live Crop Preview (3:4)</h3>
+          <div class="img-preview"></div>
+        </div>
+
+        <div class="preview-card device-preview-card">
+          <h3>Live Device Preview</h3>
+          <canvas id="deviceCanvas" width="1200" height="1600"></canvas>
+        </div>
       </div>
     </div>
 
@@ -41,9 +48,6 @@
     <!-- dithering is now done automatically when uploading -->
 
     <canvas id="outputCanvas" width="1200" height="1600"></canvas>
-
-    <h2>Live Device Preview</h2>
-    <canvas id="deviceCanvas" width="1200" height="1600"></canvas>
 
     <button id="uploadBtn">Upload BMP to S3</button>
     <p><small>Device preview updates live as you crop and rotate the image.</small></p>
