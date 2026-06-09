@@ -61,13 +61,13 @@ imageToCrop.onload = () => {
     autoCropArea: 1,
     responsive: true,
     background: false,
-    preview: ".img-preview"
+    preview: ".img-preview",
+    ready: schedulePreviewRefresh,
+    crop: schedulePreviewRefresh,
+    cropmove: schedulePreviewRefresh,
+    cropend: schedulePreviewRefresh,
+    zoom: schedulePreviewRefresh,
   });
-
-  cropper.on("crop move zoom ready", schedulePreviewRefresh);
-  cropper.on("cropend", schedulePreviewRefresh);
-
-  schedulePreviewRefresh();
 };
 
 // ----------------------------
