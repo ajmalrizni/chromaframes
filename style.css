@@ -105,6 +105,10 @@ button {
   text-align: left;
 }
 
+.controls-panel.is-hidden {
+  display: none;
+}
+
 .controls-note {
   margin-top: -0.25rem;
   color: #555;

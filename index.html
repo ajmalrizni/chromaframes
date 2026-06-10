@@ -45,9 +45,11 @@
 
     <button id="rotateRightBtn">Rotate Right</button>
 
-    <section class="controls-panel">
+    <button id="editImageBtn" type="button">Edit Image</button>
+
+    <section id="controlsPanel" class="controls-panel is-hidden">
       <h2>Image Adjustment Controls</h2>
-      <p class="controls-note">Tune the live e-paper preview in real time.</p>
+      <p class="controls-note">Adjust the live preview before uploading.</p>
       <div id="adjustmentControls" class="slider-grid"></div>
     </section>
 
@@ -56,7 +58,6 @@
     <canvas id="outputCanvas" width="1200" height="1600"></canvas>
 
     <button id="uploadBtn">Upload To Frame</button>
-    <p><small> </small></p>
   </div>
 
   <script type="module" src="main.js"></script>

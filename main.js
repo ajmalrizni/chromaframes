@@ -13,6 +13,8 @@ const outputCanvas = document.getElementById("outputCanvas");
 const deviceCanvas = document.getElementById("deviceCanvas");
 const uploadBtn = document.getElementById("uploadBtn");
 const rotateRightBtn = document.getElementById("rotateRightBtn");
+const editImageBtn = document.getElementById("editImageBtn");
+const controlsPanel = document.getElementById("controlsPanel");
 const adjustmentControls = document.getElementById("adjustmentControls");
 
 const config = {
@@ -121,6 +123,15 @@ function createAdjustmentControls() {
 const fileNameDisplay = document.getElementById("fileName");
 
 createAdjustmentControls();
+
+if (editImageBtn && controlsPanel) {
+  editImageBtn.addEventListener("click", () => {
+    controlsPanel.classList.toggle("is-hidden");
+    editImageBtn.textContent = controlsPanel.classList.contains("is-hidden")
+      ? "Edit Image"
+      : "Hide Controls";
+  });
+}
 
 fileInput.addEventListener("change", () => {
   const file = fileInput.files[0];
