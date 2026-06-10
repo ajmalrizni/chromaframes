@@ -304,5 +304,5 @@ uploadBtn.addEventListener("click", async () => {
     return;
   }
 
-  alert("Device-accurate BMP UPLOADED!");
+  alert("Image uploaded!");
 });
