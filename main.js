@@ -156,8 +156,6 @@ imageToCrop.onload = () => {
     background: false,
     preview: ".img-preview",
     ready: schedulePreviewRefresh,
-    crop: schedulePreviewRefresh,
-    cropmove: schedulePreviewRefresh,
     cropend: schedulePreviewRefresh,
     zoom: schedulePreviewRefresh,
   });
