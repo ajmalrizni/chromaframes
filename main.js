@@ -378,7 +378,7 @@ rotateRightBtn.addEventListener("click", () => {
   img.src = imageToCrop.src;
 });
 
-uploadBtn.textContent = "Download All BMPs";
+uploadBtn.textContent = "Upload To Frame";
 
 uploadBtn.addEventListener("click", async () => {
   if (!cropper) {
@@ -464,6 +464,6 @@ downloadBtn.addEventListener("click", async () => {
     alert("An error occurred while processing images.");
   } finally {
     downloadBtn.disabled = false;
-    downloadBtn.textContent = "Download All BMPs";
+    downloadBtn.textContent = "Download BMPs (ZIP)";
   }
 });
