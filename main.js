@@ -44,6 +44,7 @@ const config = {
 
 let cropper = null;
 let previewTimer = null;
+let uploadedFiles = [];
 
 function schedulePreviewRefresh() {
   if (previewTimer) clearTimeout(previewTimer);
@@ -134,13 +135,30 @@ if (editImageBtn && controlsPanel) {
 }
 
 fileInput.addEventListener("change", () => {
-  const file = fileInput.files[0];
-  if (!file) {
+  uploadedFiles = Array.from(fileInput.files);
+
+  if (uploadedFiles.length === 0) {
     document.body.classList.remove("has-image");
     imageToCrop.src = "";
     fileNameDisplay.textContent = "No file chosen";
     return;
   }
+
+  fileNameDisplay.textContent =
+    uploadedFiles.length === 1
+      ? uploadedFiles[0].name
+      : `${uploadedFiles.length} files selected`;
+
+  const reader = new FileReader();
+
+  reader.onload = e => {
+    imageToCrop.src = e.target.result;
+    document.body.classList.add("has-image");
+  };
+
+  reader.readAsDataURL(uploadedFiles[0]);
+});
+
 
   fileNameDisplay.textContent = file.name;
 
@@ -211,6 +229,85 @@ async function prepareDeviceCanvas() {
   });*/
 
   return true;
+}
+
+// ----------------------------
+// Batch processing helper
+// ----------------------------
+async function processImageFile(file, cropTemplate) {
+  return new Promise((resolve, reject) => {
+
+    const reader = new FileReader();
+
+    reader.onload = e => {
+
+      const img = new Image();
+
+      img.onload = async () => {
+
+        const cropCanvas =
+          document.createElement("canvas");
+
+        cropCanvas.width = 1200;
+        cropCanvas.height = 1600;
+
+        const cropCtx =
+          cropCanvas.getContext("2d");
+
+        cropCtx.drawImage(
+          img,
+          cropTemplate.x,
+          cropTemplate.y,
+          cropTemplate.width,
+          cropTemplate.height,
+          0,
+          0,
+          1200,
+          1600
+        );
+
+        const ditherCanvas =
+          document.createElement("canvas");
+
+        ditherCanvas.width = 1200;
+        ditherCanvas.height = 1600;
+
+        await ditherImage(
+          cropCanvas,
+          ditherCanvas,
+          {
+            palette: aitjcizeSpectra6Palette,
+            ditheringType: "errorDiffusion",
+            errorDiffusionMatrix:
+              config.canvasDitherOptions.errorDiffusionMatrix,
+            serpentine:
+              config.canvasDitherOptions.serpentine ?? true,
+            ...config.imageAdjustmentOptions
+          }
+        );
+
+        const deviceCanvas =
+          document.createElement("canvas");
+
+        deviceCanvas.width = 1200;
+        deviceCanvas.height = 1600;
+
+        replaceColors(
+          ditherCanvas,
+          deviceCanvas,
+          aitjcizeSpectra6Palette
+        );
+
+        resolve(deviceCanvas);
+      };
+
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 }
 
 // ----------------------------
@@ -288,13 +385,83 @@ rotateRightBtn.addEventListener("click", () => {
   img.src = imageToCrop.src;
 });
 
+uploadBtn.textContent = "Download All BMPs";
+
 uploadBtn.addEventListener("click", async () => {
-  // ensure an image is cropped and dithering performed first
-  const ok = await prepareDeviceCanvas();
-  if (!ok) {
-    alert("Please select and crop an image first.");
+
+  if (!cropper || uploadedFiles.length === 0) {
+    alert("Please select images first.");
     return;
   }
+
+//const cropTemplate = getCropTemplate();
+  const cropTemplate = cropper.getData(true);
+
+  const zip = new JSZip();
+
+  uploadBtn.disabled = true;
+  uploadBtn.textContent = "Processing...";
+
+  try {
+
+    for (let i = 0; i < uploadedFiles.length; i++) {
+
+      const file = uploadedFiles[i];
+
+      const processedCanvas =
+        await processImageFile(
+          file,
+          cropTemplate
+        );
+
+      const bmpBlob =
+        canvasToBMP(processedCanvas);
+
+      const filename =
+        file.name.replace(/\.[^/.]+$/, "");
+
+      zip.file(
+        `${filename}.bmp`,
+        bmpBlob
+      );
+
+      uploadBtn.textContent =
+        `Processing ${i + 1}/${uploadedFiles.length}`;
+    }
+
+    const zipBlob =
+      await zip.generateAsync({
+        type: "blob"
+      });
+
+    const link =
+      document.createElement("a");
+
+    link.href =
+      URL.createObjectURL(zipBlob);
+
+    link.download =
+      "processed-images.zip";
+
+    link.click();
+
+    URL.revokeObjectURL(link.href);
+
+  } catch (err) {
+
+    console.error(err);
+
+    alert(
+      "An error occurred while processing images."
+    );
+
+  } finally {
+
+    uploadBtn.disabled = false;
+    uploadBtn.textContent =
+      "Download All BMPs";
+  }
+});
 
   const bmpBlob = canvasToBMP(deviceCanvas);
 
