@@ -12,10 +12,15 @@ const imageToCrop = document.getElementById("imageToCrop");
 const outputCanvas = document.getElementById("outputCanvas");
 const deviceCanvas = document.getElementById("deviceCanvas");
 const uploadBtn = document.getElementById("uploadBtn");
+
+const downloadBtn = document.getElementById("downloadBtn");
+
 const rotateRightBtn = document.getElementById("rotateRightBtn");
 const editImageBtn = document.getElementById("editImageBtn");
 const controlsPanel = document.getElementById("controlsPanel");
 const adjustmentControls = document.getElementById("adjustmentControls");
+
+const progressText = document.getElementById("progressText");
 
 const config = {
   "palette": "aitjcizeSpectra6Palette",
@@ -157,18 +162,6 @@ fileInput.addEventListener("change", () => {
   };
 
   reader.readAsDataURL(uploadedFiles[0]);
-});
-
-
-  fileNameDisplay.textContent = file.name;
-
-  const reader = new FileReader();
-  reader.onload = e => {
-    imageToCrop.src = e.target.result;
-    document.body.classList.add("has-image");
-  };
-
-  reader.readAsDataURL(file);
 });
 
 // ----------------------------
@@ -388,99 +381,89 @@ rotateRightBtn.addEventListener("click", () => {
 uploadBtn.textContent = "Download All BMPs";
 
 uploadBtn.addEventListener("click", async () => {
+  if (!cropper) {
+    alert("Please select and crop an image first.");
+    return;
+  }
 
+  uploadBtn.disabled = true;
+  uploadBtn.textContent = "Uploading...";
+
+  try {
+    await prepareDeviceCanvas();
+
+    const bmpBlob = canvasToBMP(deviceCanvas);
+
+    const UPLOAD_ENDPOINT =
+      "https://dakkqppdipyhvam5k7hzyowupi0huiow.lambda-url.eu-north-1.on.aws/";
+
+    const res = await fetch(UPLOAD_ENDPOINT);
+    const { uploadUrl } = await res.json();
+
+    const put = await fetch(uploadUrl, {
+      method: "PUT",
+      headers: { "Content-Type": "image/bmp" },
+      body: bmpBlob
+    });
+
+    if (!put.ok) {
+      throw new Error("Upload failed");
+    }
+
+    alert("Image uploaded!");
+
+  } catch (err) {
+    console.error(err);
+    alert("Upload failed");
+  } finally {
+    uploadBtn.disabled = false;
+    uploadBtn.textContent = "Upload To Frame";
+  }
+});
+
+downloadBtn.addEventListener("click", async () => {
   if (!cropper || uploadedFiles.length === 0) {
     alert("Please select images first.");
     return;
   }
 
-//const cropTemplate = getCropTemplate();
   const cropTemplate = cropper.getData(true);
-
   const zip = new JSZip();
 
-  uploadBtn.disabled = true;
-  uploadBtn.textContent = "Processing...";
+  downloadBtn.disabled = true;
+  downloadBtn.textContent = "Processing...";
 
   try {
-
     for (let i = 0; i < uploadedFiles.length; i++) {
-
       const file = uploadedFiles[i];
 
-      const processedCanvas =
-        await processImageFile(
-          file,
-          cropTemplate
-        );
-
-      const bmpBlob =
-        canvasToBMP(processedCanvas);
-
-      const filename =
-        file.name.replace(/\.[^/.]+$/, "");
-
-      zip.file(
-        `${filename}.bmp`,
-        bmpBlob
+      const processedCanvas = await processImageFile(
+        file,
+        cropTemplate
       );
 
-      uploadBtn.textContent =
-        `Processing ${i + 1}/${uploadedFiles.length}`;
+      const bmpBlob = canvasToBMP(processedCanvas);
+
+      const filename = file.name.replace(/\.[^/.]+$/, "");
+      zip.file(`${filename}.bmp`, bmpBlob);
+
+      downloadBtn.textContent = `Processing ${i + 1}/${uploadedFiles.length}`;
     }
 
-    const zipBlob =
-      await zip.generateAsync({
-        type: "blob"
-      });
+    const zipBlob = await zip.generateAsync({ type: "blob" });
 
-    const link =
-      document.createElement("a");
-
-    link.href =
-      URL.createObjectURL(zipBlob);
-
-    link.download =
-      "processed-images.zip";
-
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(zipBlob);
+    link.download = "processed-images.zip";
     link.click();
 
     URL.revokeObjectURL(link.href);
 
   } catch (err) {
-
     console.error(err);
-
-    alert(
-      "An error occurred while processing images."
-    );
-
+    alert("An error occurred while processing images.");
   } finally {
-
-    uploadBtn.disabled = false;
-    uploadBtn.textContent =
-      "Download All BMPs";
+    downloadBtn.disabled = false;
+    downloadBtn.textContent = "Download All BMPs";
   }
-});
-
-  const bmpBlob = canvasToBMP(deviceCanvas);
-
-  const UPLOAD_ENDPOINT =
-    "https://dakkqppdipyhvam5k7hzyowupi0huiow.lambda-url.eu-north-1.on.aws/";
-
-  const res = await fetch(UPLOAD_ENDPOINT);
-  const { uploadUrl } = await res.json();
-
-  const put = await fetch(uploadUrl, {
-    method: "PUT",
-    headers: { "Content-Type": "image/bmp" },
-    body: bmpBlob
-  });
-
-  if (!put.ok) {
-    alert("Upload failed");
-    return;
-  }
-
-  alert("Image uploaded!");
 });

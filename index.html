@@ -22,7 +22,7 @@
     <label for="fileInput" class="file-label">Choose File</label>
     <!-- <input type="file" id="fileInput" accept="image/*" /> -->
      <input type="file" id="fileInput" accept="image/*" multiple />
-     
+
     <div id="fileName">No file chosen</div>
   </div>
   <div class="hide-on-no-image">
@@ -60,6 +60,9 @@
     <canvas id="outputCanvas" width="1200" height="1600"></canvas>
 
     <button id="uploadBtn">Upload To Frame</button>
+
+    <button id="downloadBtn">Download BMPs (ZIP)</button>
+    <div id="progressText" style="margin-top: 0.5rem; font-size: 0.9rem;"></div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
